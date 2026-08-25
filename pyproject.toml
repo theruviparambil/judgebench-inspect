@@ -1,0 +1,41 @@
+[project]
+name = "judgebench-inspect"
+version = "0.1.0"
+description = "JudgeBench (arXiv:2410.12784) implemented for Inspect AI: a benchmark for evaluating LLM-based judges."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Alexander Theruviparambil" }]
+dependencies = [
+    "inspect_ai>=0.3.260",
+    "datasets>=3.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/theruviparambil/judgebench-inspect"
+Paper = "https://arxiv.org/abs/2410.12784"
+
+[project.optional-dependencies]
+# Model providers are optional in inspect_ai; install the ones you need. These
+# two cover the models this eval publishes results for. They live in the
+# manifest rather than being installed ad hoc because `uv run` resyncs the
+# environment to match this file and will silently drop anything not listed.
+providers = [
+    "openai>=1.0",
+    "anthropic>=0.40",
+]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.6",
+    "judgebench-inspect[providers]",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/judgebench_inspect"]
+
+[tool.ruff]
+line-length = 100

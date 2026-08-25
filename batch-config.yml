@@ -1,0 +1,7 @@
+# gpt-5.6-terra has a 900,000 enqueued-token batch cap on this org, and OpenAI
+# counts RESERVED output tokens (max_tokens) rather than actual, so a default
+# reservation blows the cap regardless of real usage. Terra emits ~350 output
+# tokens per judgment here, so 4096 is generous headroom; 100 requests then
+# enqueues ~550K. Verify no sample stops on max_tokens after any change here.
+size: 100
+max_batches: 1
