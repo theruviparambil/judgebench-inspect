@@ -53,10 +53,15 @@ def main() -> None:
                     for name, metric in score.metrics.items()
                     if name in METRICS
                 },
+                # Every grouped source, not just the mmlu-pro ones. An earlier
+                # version filtered on "mmlu-pro" and silently dropped the
+                # LiveBench and LiveCodeBench groups, which are the majority of
+                # the gpt split; that filter is how the README came to describe
+                # the dataset as MMLU-Pro only.
                 "per_source": {
                     name: round(metric.value, 4)
                     for name, metric in score.metrics.items()
-                    if name.startswith("mmlu-pro")
+                    if name not in METRICS and name != "all"
                 },
             }
         )

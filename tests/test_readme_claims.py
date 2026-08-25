@@ -138,3 +138,33 @@ def test_every_run_shares_one_grading_hash() -> None:
     assert hashes == {RESULTS["grading_hash"]}, (
         f"receipts carry mixed grading hashes {hashes}; they are not comparable"
     )
+
+
+def test_readme_dataset_composition_matches_the_receipts() -> None:
+    """Pin the dataset's actual makeup, not a claim about it.
+
+    The README originally said the items "come from MMLU-Pro", which was read
+    off a 100-row sample that happened to be all MMLU-Pro. In fact LiveBench and
+    LiveCodeBench are the majority of the gpt split. Numbers were pinned but
+    prose about the data was not, so nothing caught it. This does.
+    """
+    sources = _row("gpt-5.6-luna", "gpt")["per_source"]
+    non_mmlu = {s for s in sources if not s.startswith("mmlu-pro")}
+    mmlu = {s for s in sources if s.startswith("mmlu-pro")}
+
+    assert non_mmlu == {"livebench-reasoning", "livebench-math", "livecodebench"}, (
+        f"upstream source set changed: {sorted(non_mmlu)}"
+    )
+    assert len(mmlu) == 14, f"expected 14 MMLU-Pro subjects, found {len(mmlu)}"
+
+    # Every non-MMLU source must be named in the README, so a future change to
+    # the dataset cannot leave the description quietly describing the old one.
+    # Bolded exactly as written, so a substring of a renamed label cannot pass.
+    for name, label in (
+        ("livebench-reasoning", "**LiveBench reasoning**"),
+        ("livebench-math", "**LiveBench math**"),
+        ("livecodebench", "**LiveCodeBench**"),
+    ):
+        assert label in README, f"README does not name {name} as {label}"
+    assert "MMLU-Pro** across 14 subjects" in README
+    assert "not the whole of either" in README

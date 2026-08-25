@@ -66,7 +66,7 @@ Any headline accuracy below roughly 55% is indistinguishable from not reading th
 | `judgebench_gpt_positional` | 700 | 350 | `gpt-4o-2024-05-13` |
 | `judgebench_claude_positional` | 540 | 270 | Claude |
 
-Sources are MMLU-Pro subject subsets across 17 subjects including law, biology, computer science, health, history, psychology, philosophy, economics, and math.
+Items come from four upstream benchmarks, all of which have verifiable answers: **LiveBench reasoning** (98 gpt / 51 claude pairs), **LiveBench math** (56 / 34), **LiveCodeBench** (42 / 31), and **MMLU-Pro** across 14 subjects (11 pairs each, 154 / 154). MMLU-Pro is therefore 44% of the gpt split and 57% of the claude split, not the whole of either.
 
 The positional tasks present every pair twice, once as shipped and once with the two responses swapped. Swapping moves the correct content into the other slot, so the correct letter flips. Three metrics come out:
 
@@ -90,7 +90,7 @@ All four runs above cost **under $5 in total**, including every smoke test.
 
 ## Design notes
 
-**The two responses are delimited blocks, not lettered choices.** This looks like a formatting detail and is not. JudgeBench items come from MMLU-Pro, so candidate responses routinely contain their own `(A) ... (B) ... (C)` option lists while reasoning about the original question. Rendering the two responses as choices `A)` and `B)` puts two competing letter schemes in one prompt, and models answer the embedded question instead of judging. An early version of this harness did exactly that and scored 0.000, with the model confidently answering `(C)` on a two-option task. The verdict token is named `VERDICT` so it cannot collide with the dataset's own lettering.
+**The two responses are delimited blocks, not lettered choices.** This looks like a formatting detail and is not. Roughly half the items come from MMLU-Pro, so candidate responses routinely contain their own `(A) ... (B) ... (C)` option lists while reasoning about the original question. Rendering the two responses as choices `A)` and `B)` puts two competing letter schemes in one prompt, and models answer the embedded question instead of judging. An early version of this harness did exactly that and scored 0.000, with the model confidently answering `(C)` on a two-option task. The verdict token is named `VERDICT` so it cannot collide with the dataset's own lettering.
 
 **A reply with no verdict scores incorrect** rather than being coerced into a guess, and the parse rate is reported alongside so the two failure modes stay separable.
 

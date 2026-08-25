@@ -29,7 +29,10 @@
         "mmlu-pro-business": 0.6364,
         "mmlu-pro-economics": 0.5455,
         "mmlu-pro-biology": 0.4545,
-        "mmlu-pro-computer science": 0.8636
+        "mmlu-pro-computer science": 0.8636,
+        "livebench-math": 0.8971,
+        "livebench-reasoning": 0.7451,
+        "livecodebench": 0.7258
       }
     },
     {
@@ -60,7 +63,10 @@
         "mmlu-pro-chemistry": 0.9545,
         "mmlu-pro-physics": 0.9091,
         "mmlu-pro-engineering": 0.7727,
-        "mmlu-pro-business": 0.7273
+        "mmlu-pro-business": 0.7273,
+        "livebench-math": 0.875,
+        "livebench-reasoning": 0.8316,
+        "livecodebench": 0.9048
       }
     },
     {
@@ -91,7 +97,10 @@
         "mmlu-pro-business": 0.7273,
         "mmlu-pro-economics": 0.7727,
         "mmlu-pro-biology": 0.8182,
-        "mmlu-pro-computer science": 1.0
+        "mmlu-pro-computer science": 1.0,
+        "livebench-math": 0.9118,
+        "livebench-reasoning": 0.9706,
+        "livecodebench": 0.9677
       }
     },
     {
@@ -122,7 +131,10 @@
         "mmlu-pro-chemistry": 0.9545,
         "mmlu-pro-physics": 0.8636,
         "mmlu-pro-engineering": 0.9091,
-        "mmlu-pro-business": 0.8636
+        "mmlu-pro-business": 0.8636,
+        "livebench-math": 0.9107,
+        "livebench-reasoning": 0.9541,
+        "livecodebench": 0.9762
       }
     }
   ]
