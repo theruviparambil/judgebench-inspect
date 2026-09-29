@@ -1,6 +1,6 @@
 [project]
 name = "judgebench-inspect"
-version = "0.1.0"
+version = "0.2.0"
 description = "JudgeBench (arXiv:2410.12784) implemented for Inspect AI: a benchmark for evaluating LLM-based judges."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -10,6 +10,11 @@ dependencies = [
     "inspect_ai>=0.3.260",
     "datasets>=3.0.0",
 ]
+
+# Registers the tasks with Inspect, so `inspect eval judgebench_inspect/judgebench_gpt`
+# resolves from an installed package without a file path.
+[project.entry-points.inspect_ai]
+judgebench_inspect = "judgebench_inspect"
 
 [project.urls]
 Homepage = "https://github.com/theruviparambil/judgebench-inspect"
