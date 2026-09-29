@@ -9,10 +9,14 @@ green, because that is exactly the silent-drift failure this file exists to stop
 """
 
 from judgebench_inspect.grading import _normalized_source, grading_hash
-from judgebench_inspect.task import judgebench_positional_task, judgebench_task
+from judgebench_inspect.task import TASK_VERSION, judgebench_positional_task, judgebench_task
 
 # Bump ONLY together with a re-run and a README update. See the module docstring.
 EXPECTED_GRADING_HASH = "a054759f0aa17eb6"
+
+# The hash does not see the scoring rule; the task version records it. Bump ONLY
+# together with a CHANGELOG entry and a rescore of logs-full/ (scripts/rescore_logs.py).
+EXPECTED_TASK_VERSION = 1
 
 
 def test_grading_hash_is_pinned() -> None:
@@ -26,13 +30,21 @@ def test_grading_hash_is_deterministic() -> None:
     assert grading_hash() == grading_hash()
 
 
-def test_hash_is_stamped_into_every_task() -> None:
+def test_hash_and_version_are_stamped_into_every_task() -> None:
+    assert TASK_VERSION == EXPECTED_TASK_VERSION, (
+        "task version changed; rescore logs-full/, regenerate the receipts, "
+        "and explain the change in CHANGELOG.md before updating this pin"
+    )
     for build in (judgebench_task, judgebench_positional_task):
         for split in ("gpt", "claude"):
-            metadata = build(split).metadata or {}
+            built = build(split)
+            metadata = built.metadata or {}
             assert metadata.get("grading_hash") == EXPECTED_GRADING_HASH, (
                 f"{build.__name__}({split!r}) did not carry the grading hash; "
                 "a receipt without it cannot be checked for drift"
+            )
+            assert built.version == EXPECTED_TASK_VERSION, (
+                f"{build.__name__}({split!r}) does not carry the task version"
             )
 
 

@@ -1,5 +1,6 @@
 {
   "grading_hash": "a054759f0aa17eb6",
+  "scorer": "verdict",
   "runs": [
     {
       "model": "anthropic/claude-haiku-4-5",
@@ -8,31 +9,32 @@
       "judgments": 540,
       "pairs": 270,
       "grading_hash": "a054759f0aa17eb6",
+      "scorer": "verdict",
       "metrics": {
-        "accuracy": 0.7389,
-        "stderr": 0.0189,
-        "position_consistency": 0.8111,
-        "first_position_rate": 0.4722,
+        "accuracy": 0.737,
+        "stderr": 0.019,
+        "position_consistency": 0.8074,
+        "first_position_rate": 0.4741,
         "verdict_parse_rate": 1.0
       },
       "per_source": {
-        "mmlu-pro-health": 0.8182,
-        "mmlu-pro-psychology": 0.6364,
-        "mmlu-pro-chemistry": 0.8636,
-        "mmlu-pro-philosophy": 0.5909,
-        "mmlu-pro-physics": 0.9545,
-        "mmlu-pro-history": 0.7273,
-        "mmlu-pro-math": 0.9091,
-        "mmlu-pro-other": 0.5909,
-        "mmlu-pro-law": 0.6818,
-        "mmlu-pro-engineering": 0.5909,
-        "mmlu-pro-business": 0.6364,
-        "mmlu-pro-economics": 0.5455,
-        "mmlu-pro-biology": 0.4545,
-        "mmlu-pro-computer science": 0.8636,
         "livebench-math": 0.8971,
         "livebench-reasoning": 0.7451,
-        "livecodebench": 0.7258
+        "livecodebench": 0.7258,
+        "mmlu-pro-biology": 0.4545,
+        "mmlu-pro-business": 0.6364,
+        "mmlu-pro-chemistry": 0.8636,
+        "mmlu-pro-computer science": 0.8636,
+        "mmlu-pro-economics": 0.5455,
+        "mmlu-pro-engineering": 0.5909,
+        "mmlu-pro-health": 0.8182,
+        "mmlu-pro-history": 0.7273,
+        "mmlu-pro-law": 0.6364,
+        "mmlu-pro-math": 0.9091,
+        "mmlu-pro-other": 0.5909,
+        "mmlu-pro-philosophy": 0.5909,
+        "mmlu-pro-physics": 0.9545,
+        "mmlu-pro-psychology": 0.6364
       }
     },
     {
@@ -42,6 +44,7 @@
       "judgments": 700,
       "pairs": 350,
       "grading_hash": "a054759f0aa17eb6",
+      "scorer": "verdict",
       "metrics": {
         "accuracy": 0.8286,
         "stderr": 0.0143,
@@ -50,23 +53,23 @@
         "verdict_parse_rate": 1.0
       },
       "per_source": {
-        "mmlu-pro-law": 0.7273,
-        "mmlu-pro-biology": 0.6364,
-        "mmlu-pro-computer science": 0.8636,
-        "mmlu-pro-health": 0.5909,
-        "mmlu-pro-history": 0.8636,
-        "mmlu-pro-psychology": 0.5909,
-        "mmlu-pro-other": 0.7727,
-        "mmlu-pro-philosophy": 0.8636,
-        "mmlu-pro-economics": 0.8636,
-        "mmlu-pro-math": 0.9091,
-        "mmlu-pro-chemistry": 0.9545,
-        "mmlu-pro-physics": 0.9091,
-        "mmlu-pro-engineering": 0.7727,
-        "mmlu-pro-business": 0.7273,
         "livebench-math": 0.875,
         "livebench-reasoning": 0.8316,
-        "livecodebench": 0.9048
+        "livecodebench": 0.9048,
+        "mmlu-pro-biology": 0.6364,
+        "mmlu-pro-business": 0.7273,
+        "mmlu-pro-chemistry": 0.9545,
+        "mmlu-pro-computer science": 0.8636,
+        "mmlu-pro-economics": 0.8636,
+        "mmlu-pro-engineering": 0.7727,
+        "mmlu-pro-health": 0.5909,
+        "mmlu-pro-history": 0.8636,
+        "mmlu-pro-law": 0.7273,
+        "mmlu-pro-math": 0.9091,
+        "mmlu-pro-other": 0.7727,
+        "mmlu-pro-philosophy": 0.8636,
+        "mmlu-pro-physics": 0.9091,
+        "mmlu-pro-psychology": 0.5909
       }
     },
     {
@@ -76,6 +79,7 @@
       "judgments": 540,
       "pairs": 270,
       "grading_hash": "a054759f0aa17eb6",
+      "scorer": "verdict",
       "metrics": {
         "accuracy": 0.887,
         "stderr": 0.0136,
@@ -84,23 +88,23 @@
         "verdict_parse_rate": 1.0
       },
       "per_source": {
-        "mmlu-pro-health": 0.7273,
-        "mmlu-pro-psychology": 0.5909,
-        "mmlu-pro-chemistry": 0.9091,
-        "mmlu-pro-philosophy": 0.7727,
-        "mmlu-pro-physics": 1.0,
-        "mmlu-pro-history": 0.7273,
-        "mmlu-pro-math": 1.0,
-        "mmlu-pro-other": 0.8182,
-        "mmlu-pro-law": 0.9091,
-        "mmlu-pro-engineering": 0.9545,
-        "mmlu-pro-business": 0.7273,
-        "mmlu-pro-economics": 0.7727,
-        "mmlu-pro-biology": 0.8182,
-        "mmlu-pro-computer science": 1.0,
         "livebench-math": 0.9118,
         "livebench-reasoning": 0.9706,
-        "livecodebench": 0.9677
+        "livecodebench": 0.9677,
+        "mmlu-pro-biology": 0.8182,
+        "mmlu-pro-business": 0.7273,
+        "mmlu-pro-chemistry": 0.9091,
+        "mmlu-pro-computer science": 1.0,
+        "mmlu-pro-economics": 0.7727,
+        "mmlu-pro-engineering": 0.9545,
+        "mmlu-pro-health": 0.7273,
+        "mmlu-pro-history": 0.7273,
+        "mmlu-pro-law": 0.9091,
+        "mmlu-pro-math": 1.0,
+        "mmlu-pro-other": 0.8182,
+        "mmlu-pro-philosophy": 0.7727,
+        "mmlu-pro-physics": 1.0,
+        "mmlu-pro-psychology": 0.5909
       }
     },
     {
@@ -110,6 +114,7 @@
       "judgments": 700,
       "pairs": 350,
       "grading_hash": "a054759f0aa17eb6",
+      "scorer": "verdict",
       "metrics": {
         "accuracy": 0.9071,
         "stderr": 0.011,
@@ -118,23 +123,23 @@
         "verdict_parse_rate": 1.0
       },
       "per_source": {
-        "mmlu-pro-law": 0.8636,
-        "mmlu-pro-biology": 0.8636,
-        "mmlu-pro-computer science": 0.8182,
-        "mmlu-pro-health": 0.6818,
-        "mmlu-pro-history": 1.0,
-        "mmlu-pro-psychology": 0.7273,
-        "mmlu-pro-other": 0.8182,
-        "mmlu-pro-philosophy": 0.7727,
-        "mmlu-pro-economics": 0.9545,
-        "mmlu-pro-math": 0.9091,
-        "mmlu-pro-chemistry": 0.9545,
-        "mmlu-pro-physics": 0.8636,
-        "mmlu-pro-engineering": 0.9091,
-        "mmlu-pro-business": 0.8636,
         "livebench-math": 0.9107,
         "livebench-reasoning": 0.9541,
-        "livecodebench": 0.9762
+        "livecodebench": 0.9762,
+        "mmlu-pro-biology": 0.8636,
+        "mmlu-pro-business": 0.8636,
+        "mmlu-pro-chemistry": 0.9545,
+        "mmlu-pro-computer science": 0.8182,
+        "mmlu-pro-economics": 0.9545,
+        "mmlu-pro-engineering": 0.9091,
+        "mmlu-pro-health": 0.6818,
+        "mmlu-pro-history": 1.0,
+        "mmlu-pro-law": 0.8636,
+        "mmlu-pro-math": 0.9091,
+        "mmlu-pro-other": 0.8182,
+        "mmlu-pro-philosophy": 0.7727,
+        "mmlu-pro-physics": 0.8636,
+        "mmlu-pro-psychology": 0.7273
       }
     }
   ]

@@ -17,6 +17,8 @@ from pathlib import Path
 
 import pytest
 
+from judgebench_inspect.task import TASK_VERSION
+
 README = Path("README.md").read_text()
 RESULTS = json.loads(Path("out/results.json").read_text())
 RUNS = {(r["model"].split("/")[-1], r["split"]): r for r in RESULTS["runs"]}
@@ -74,8 +76,8 @@ def test_total_judgment_count_matches_receipts() -> None:
 
 
 def test_model_gap_z_scores_match_the_receipts() -> None:
-    # README claims +0.079 (z = 4.4) on gpt and +0.148 (z = 6.4) on claude.
-    for split, claimed_diff, claimed_z in (("gpt", 0.079, 4.4), ("claude", 0.148, 6.4)):
+    # README claims +0.079 (z = 4.4) on gpt and +0.150 (z = 6.4) on claude.
+    for split, claimed_diff, claimed_z in (("gpt", 0.079, 4.4), ("claude", 0.150, 6.4)):
         luna, haiku = _row("gpt-5.6-luna", split), _row("claude-haiku-4-5", split)
         diff = luna["metrics"]["accuracy"] - haiku["metrics"]["accuracy"]
         assert diff == pytest.approx(claimed_diff, abs=0.001), split
@@ -86,7 +88,7 @@ def test_model_gap_z_scores_match_the_receipts() -> None:
 def test_self_preference_table_matches_the_receipts() -> None:
     for model, claimed_diff, claimed_z in (
         ("gpt-5.6-luna", 0.020, 1.1),
-        ("claude-haiku-4-5", 0.090, 3.8),
+        ("claude-haiku-4-5", 0.092, 3.9),
     ):
         gpt, claude = _row(model, "gpt"), _row(model, "claude")
         diff = gpt["metrics"]["accuracy"] - claude["metrics"]["accuracy"]
@@ -138,6 +140,15 @@ def test_every_run_shares_one_grading_hash() -> None:
     assert hashes == {RESULTS["grading_hash"]}, (
         f"receipts carry mixed grading hashes {hashes}; they are not comparable"
     )
+
+
+def test_every_run_shares_one_scorer_and_the_readme_names_it() -> None:
+    # The scoring rule is outside the grading hash, so the receipt records it
+    # separately and the README has to say which one produced the table.
+    scorers = {r["scorer"] for r in RESULTS["runs"]}
+    assert scorers == {RESULTS["scorer"]}, f"receipts were scored by {scorers}; rescore them all"
+    assert RESULTS["scorer"] == "verdict", "the table must come from the current scorer"
+    assert f"scored by `{RESULTS['scorer']}` (task version {TASK_VERSION})" in README
 
 
 def test_readme_dataset_composition_matches_the_receipts() -> None:
