@@ -12,8 +12,8 @@ That is what separates JudgeBench from preference benchmarks: a judge that rewar
 fluent, confident, wrong answers scores badly here even when humans would have liked
 the answer.
 
-    inspect eval src/judgebench_inspect/task.py@judgebench_gpt --model openai/gpt-4o-mini
-    inspect eval src/judgebench_inspect/task.py@judgebench_claude --model anthropic/claude-haiku-4-5-20251001
+    inspect eval judgebench_inspect/judgebench_gpt --model openai/gpt-4o-mini
+    inspect eval judgebench_inspect/judgebench_claude --model anthropic/claude-haiku-4-5-20251001
 """
 
 from functools import partial
@@ -21,7 +21,7 @@ from typing import Any
 
 from inspect_ai import Task, task
 from inspect_ai.dataset import MemoryDataset, Sample, hf_dataset
-from inspect_ai.scorer import accuracy, grouped, pattern, stderr
+from inspect_ai.scorer import accuracy, grouped, stderr
 from inspect_ai.solver import generate
 
 from judgebench_inspect.grading import grading_hash
@@ -30,6 +30,12 @@ from judgebench_inspect.metrics import (
     position_consistency,
     verdict_parse_rate,
 )
+from judgebench_inspect.scorer import verdict
+
+# Bumped when the scoring RULE changes over unchanged grading inputs, which the
+# grading hash cannot see. 1: the last VERDICT line is the verdict, not the first.
+# The history is in CHANGELOG.md.
+TASK_VERSION = 1
 
 DATASET_PATH = "ScalerLab/JudgeBench"
 
@@ -66,11 +72,6 @@ VERDICT: A
 or
 VERDICT: B
 """
-
-# Tolerant of trailing punctuation and markdown emphasis around the letter, but still
-# requires the model to have named a verdict. A reply with no VERDICT line scores as
-# incorrect rather than being silently coerced to a guess.
-VERDICT_PATTERN = r"VERDICT:\s*\**\s*([AB])\b"
 
 
 def record_to_sample(record: dict[str, Any], swapped: bool = False) -> Sample:
@@ -131,7 +132,8 @@ def judgebench_task(split: str) -> Task:
     return Task(
         dataset=MemoryDataset(_load(split, swapped=False)),
         solver=generate(),
-        scorer=pattern(VERDICT_PATTERN),
+        scorer=verdict(),
+        version=TASK_VERSION,
         # Stamped into the log so two receipts can be compared only when the
         # inputs that decide a score were identical. See grading.py.
         metadata={"grading_hash": grading_hash()},
@@ -174,7 +176,8 @@ def judgebench_positional_task(split: str) -> Task:
             ]
         ),
         solver=generate(),
-        scorer=pattern(VERDICT_PATTERN),
+        scorer=verdict(),
+        version=TASK_VERSION,
         metadata={"grading_hash": grading_hash()},
         metrics=[
             accuracy(),

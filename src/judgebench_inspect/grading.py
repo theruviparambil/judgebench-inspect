@@ -14,6 +14,8 @@ NOT covered: the scorer and metric implementations themselves, model choice,
 generation settings, or anything in Inspect. This is a drift detector for the
 things that actually change between runs in this repo, not a proof that two runs
 are equivalent. Treat a matching hash as "grading inputs unchanged", nothing more.
+A change to the scoring RULE over unchanged inputs is recorded by the task
+version (`TASK_VERSION` in task.py) and explained in CHANGELOG.md.
 """
 
 import ast
@@ -49,11 +51,11 @@ def grading_hash() -> str:
 
     Imported lazily to avoid a circular import with the task module.
     """
+    from judgebench_inspect.scorer import VERDICT_PATTERN
     from judgebench_inspect.task import (
         DATASET_PATH,
         DATASET_REVISION,
         JUDGE_PROMPT,
-        VERDICT_PATTERN,
         record_to_sample,
     )
 
