@@ -15,6 +15,7 @@ The change is recorded as Inspect task `version=1` on all four tasks. The gradin
 - `[project.entry-points.inspect_ai]` registers the package, so `inspect eval judgebench_inspect/judgebench_gpt_positional` resolves from an installed package without a file path.
 - `tests/test_e2e.py` runs the positional task end to end through Inspect with a `mockllm/model` judge, over the real dataset, and checks that the last-VERDICT rule holds through the whole pipeline. It needs the dataset (network or a warm Hugging Face cache; no token) and skips with a reason otherwise.
 - `scripts/extract_results.py` records which scorer produced each receipt and refuses to combine runs scored by different scorers.
+- `.python-version` pins 3.12. The grading hash normalizes source with `ast.dump`, whose output changed in Python 3.13, so a fresh install that resolved to 3.13 computed `005012769c5ab389` for the same inputs that hash to `a054759f0aa17eb6` on 3.12 and failed the pin test. This affects 0.1.0 as well; the pin makes the published hash reproducible from a clean checkout. Hashes computed on another interpreter are not comparable with the published one.
 
 ### Documentation
 

@@ -30,6 +30,12 @@ def _normalized_source(fn: Callable[..., Any]) -> str:
 
     Reformatting a comment or rewording a docstring should not invalidate a run
     that graded identically. Changing a branch should.
+
+    `ast.dump` output differs between Python minor versions (3.13 stopped
+    printing default-valued fields), so the same source hashes differently on
+    3.12 and 3.13. `.python-version` pins the interpreter so the pinned hash is
+    reproducible from a fresh install; hashes from other interpreters are not
+    comparable even when the grading inputs are identical.
     """
     tree = ast.parse(inspect.getsource(fn).lstrip())
     for node in ast.walk(tree):
