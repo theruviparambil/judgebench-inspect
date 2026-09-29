@@ -29,9 +29,9 @@ Luna costs a fifth of Haiku 4.5 and beats it on both splits: **+0.079 (z = 4.4)*
 
 ### No self-preference
 
-The two splits are named for the model that *generated* the responses being judged, which sets up a self-preference test: does an OpenAI judge favour OpenAI-written responses?
+The two splits are named for the model that *generated* the responses being judged, which sets up a self-preference test: does an OpenAI judge favor OpenAI-written responses?
 
-It does not, and neither does the Claude judge favour Claude-written ones.
+It does not, and neither does the Claude judge favor Claude-written ones.
 
 | judge | gpt split minus claude split | z | reading |
 |---|---|---|---|
@@ -70,9 +70,11 @@ Items come from four upstream benchmarks, all of which have verifiable answers: 
 
 The positional tasks present every pair twice, once as shipped and once with the two responses swapped. Swapping moves the correct content into the other slot, so the correct letter flips. Three metrics come out:
 
-- **`position_consistency`** — fraction of pairs where the judge named the same response both times. A content-driven judge scores 1.0.
-- **`first_position_rate`** — fraction of all verdicts naming A. Since every pair runs in both orders, a content-driven judge scores exactly 0.5. Distance from 0.5 is the pull toward a slot.
-- **`verdict_parse_rate`** — fraction of replies containing a usable verdict, reported so a judge ignoring the output format is never mistaken for a judge getting answers wrong.
+- **`position_consistency`**: fraction of pairs where the judge named the same response both times. A content-driven judge scores 1.0.
+- **`first_position_rate`**: fraction of all verdicts naming A. Since every pair runs in both orders, a content-driven judge scores exactly 0.5. Distance from 0.5 is the pull toward a slot.
+- **`verdict_parse_rate`**: fraction of replies containing a usable verdict, reported so a judge ignoring the output format is never mistaken for a judge getting answers wrong.
+
+`accuracy` and `stderr` are Inspect's built-ins and run over judgments. **`stderr` treats the two orientations of a pair as independent samples, and they are not**: the same question and the same two responses are judged twice, once per order. The reported ± is therefore optimistic, and the effective sample size is the pair count (350 or 270), not the judgment count (700 or 540). The metric is left as shipped so the table stays comparable with the register listing and with 0.1.0. Read the intervals as a floor on the uncertainty; the gaps called significant above clear the bar by wide margins under either count.
 
 The plain tasks are contained in the positional ones: the `original` orientation is exactly the plain run, so there is no need to pay for both.
 
@@ -80,9 +82,11 @@ The plain tasks are contained in the positional ones: the `original` orientation
 
 ```bash
 uv sync --extra providers
-uv run inspect eval src/judgebench_inspect/task.py@judgebench_gpt_positional --model openai/gpt-5.6-luna
-uv run inspect eval src/judgebench_inspect/task.py@judgebench_claude_positional --model anthropic/claude-haiku-4-5 --batch
+uv run inspect eval judgebench_inspect/judgebench_gpt_positional --model openai/gpt-5.6-luna
+uv run inspect eval judgebench_inspect/judgebench_claude_positional --model anthropic/claude-haiku-4-5 --batch
 ```
+
+The package registers an `inspect_ai` entry point, so tasks resolve by package name once installed. The file-path form, `src/judgebench_inspect/task.py@judgebench_gpt_positional`, still works from a checkout.
 
 Scoring is deterministic. The model under test *is* the judge, so there is no grader model in the loop and no grader to validate.
 
@@ -91,6 +95,8 @@ All four runs above cost **under $5 in total**, including every smoke test.
 ## Design notes
 
 **The two responses are delimited blocks, not lettered choices.** This looks like a formatting detail and is not. Roughly half the items come from MMLU-Pro, so candidate responses routinely contain their own `(A) ... (B) ... (C)` option lists while reasoning about the original question. Rendering the two responses as choices `A)` and `B)` puts two competing letter schemes in one prompt, and models answer the embedded question instead of judging. An early version of this harness did exactly that and scored 0.000, with the model confidently answering `(C)` on a two-option task. The verdict token is named `VERDICT` so it cannot collide with the dataset's own lettering.
+
+**The last `VERDICT:` line is the verdict.** The prompt asks for reasoning followed by a closing verdict, so a judge that names one letter, reconsiders, and ends on the other has decided on the second. Inspect's built-in `pattern()` scorer takes the first match; 0.1.0 used it, and the register's review caught it. Task version 1 scores the last line, and the [CHANGELOG](CHANGELOG.md) names the one published judgment that changed.
 
 **A reply with no verdict scores incorrect** rather than being coerced into a guess, and the parse rate is reported alongside so the two failure modes stay separable.
 
